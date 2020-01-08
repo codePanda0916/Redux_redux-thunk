@@ -1,6 +1,7 @@
 import React from 'react';
 import { List } from 'antd';
 import store from '../../store/index';
+import * as Actiom from '../../store/actions';
 import 'antd/dist/antd.css';
 import './index.css';
  
@@ -10,6 +11,7 @@ class TodoList extends React.Component{
     this.state = {
       list: store.getState().list
     };
+    this.deleteItem = this.deleteItem.bind(this);
     this.watchState = this.watchState.bind(this);
     store.subscribe(this.watchState);
   }
@@ -20,6 +22,14 @@ class TodoList extends React.Component{
     })
   }
 
+  deleteItem(index){
+    const action = {
+      type: Actiom.DELETE_ITEM,
+      index
+    }
+    store.dispatch(action);
+  }
+
   render(){
     const { list } = this.state;
     return (
@@ -27,7 +37,7 @@ class TodoList extends React.Component{
         <List
           bordered
           dataSource={list}
-          renderItem={(item) => (<List.Item>{item.name}</List.Item>)}
+          renderItem={(item, index) => (<List.Item onClick={() => this.deleteItem(index)}>{item.name}</List.Item>)}
         />
       </div>
     )

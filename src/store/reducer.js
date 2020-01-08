@@ -18,7 +18,13 @@ export default (state = defaultState, action) => {
     return newState;
   }
 
-  if(action.type === Action.GET_DATA){
+  if (action.type === Action.DELETE_ITEM){
+    let newState = fromJS(state).toJS();
+    newState.list.splice(action.index, 1);
+    return newState;
+  }
+
+  if (action.type === Action.GET_DATA){
     let newState = fromJS(state).toJS();
     newState = action.data;
     return newState;
